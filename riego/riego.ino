@@ -46,7 +46,7 @@ void setup(){
     if(request->hasParam("state")){
       String state = request->getParam("state")->value();
       timerActivo = false; 
-      
+
       digitalWrite(relayPin, (state == "ON") ? HIGH : LOW);
       request->send(200, "application/json", "{\"status\":\"ok\"}");
     }
@@ -71,6 +71,13 @@ void setup(){
     request->send(200, "application/json", "{\"status\":\"ok\"}");
   }
 });
+  Serial.println("");
+  Serial.println("¡Conectado exitosamente!");
+  Serial.print("IP asignada por el router: ");
+  Serial.println(WiFi.localIP()); // Esta es la IP que pondrás en tu túnel de Cloudflare
+  Serial.print("Señal (RSSI): ");
+  Serial.print(WiFi.RSSI());
+  Serial.println(" dBm");
 
   server.begin();
 }

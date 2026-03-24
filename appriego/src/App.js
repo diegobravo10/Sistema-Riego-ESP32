@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 
-const ESP_IP = "http://192.168.0.104";
+const ESP_IP = "/api";
 
 const CIRC = 2 * Math.PI * 45;
 
