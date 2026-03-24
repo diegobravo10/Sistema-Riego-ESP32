@@ -9,39 +9,39 @@
 
 Este proyecto es una solución IoT para el riego automatizado y remoto basado en un microcontrolador ESP32. El sistema permite controlar una electroválvula de riego a través de una aplicación web moderna construida con React. El usuario puede encender o apagar el riego de forma manual, activar un temporizador, o dejar que el sistema opere en modo automático utilizando las lecturas físicas de un sensor de humedad del suelo.
 
-**🌍 Acceso Global y Arquitectura:**  
+** Acceso Global y Arquitectura:**  
 La interfaz web frontend está alojada en un servidor local que ha sido expuesto a internet de forma segura a través de un túnel. Esto permite acceder fácilmente al panel de control desde cualquier parte del mundo (y en cualquier red) medianta la URL:  
 
-👉 **[https://riego.bravoserver.fun/](https://riego.bravoserver.fun/)**
+ **[https://riego.bravoserver.fun/](https://riego.bravoserver.fun/)**
 
 Una vez que el usuario interactúa con la interfaz web, el servidor local redirige y canaliza de forma interna (vía red local WiFi) las distintas peticiones HTTP JSON hacia la API del microcontrolador ESP32.
 
 ---
 
-## 📑 Tabla de Contenido
-- [✨ Características](#-características)
-- [🛠️ Tecnologías Utilizadas](#️-tecnologías-utilizadas)
-- [⚙️ Arquitectura y Diagrama de Funcionamiento](#️-arquitectura-y-diagrama-de-funcionamiento)
-- [📂 Estructura del Proyecto](#-estructura-del-proyecto)
-- [🚀 Instrucciones de Instalación](#-instrucciones-de-instalación)
-- [💻 Ejemplo de Uso](#-ejemplo-de-uso)
-- [🔮 Mejoras Futuras](#-mejoras-futuras)
-- [👨‍💻 Autor](#-autor)
+##  Tabla de Contenido
+- [ Características](#-características)
+- [ Tecnologías Utilizadas](#️-tecnologías-utilizadas)
+- [ Arquitectura y Diagrama de Funcionamiento](#️-arquitectura-y-diagrama-de-funcionamiento)
+- [ Estructura del Proyecto](#-estructura-del-proyecto)
+- [ Instrucciones de Instalación](#-instrucciones-de-instalación)
+- [ Ejemplo de Uso](#-ejemplo-de-uso)
+- [ Mejoras Futuras](#-mejoras-futuras)
+- [ Autor](#-autor)
 
 ---
 
-## ✨ Características
+##  Características
 
-- 🌐 **Despliegue Público Activo:** Plataforma web en línea para la gestión, sin necesidad de conectarse a la misma red de la casa.
-- 🎛️ **Control Manual Remoto:** Enciende y apaga la válvula de riego al instante desde la URL pública.
-- ⏱️ **Modo Temporizador:** Configura el riego por una cantidad de segundos determinados y el sistema cerrará la válvula automáticamente al finalizar el conteo.
-- 🤖 **Modo Automático:** Utiliza las lecturas del sensor de humedad (analógico) para activar el riego solo cuando la tierra lo requiera (se activa cuando la humedad está por debajo del 30%).
-- 📊 **Monitoreo en Tiempo Real:** Visualiza la humedad actual del suelo, el estado de la válvula y los modos activos a través de la aplicación web.
-- ⚡ **Servidor Asíncrono:** Respuestas rápidas, estables y sin bloqueos del microcontrolador gracias a la robusta librería `ESPAsyncWebServer`.
+-  **Despliegue Público Activo:** Plataforma web en línea para la gestión, sin necesidad de conectarse a la misma red de la casa.
+-  **Control Manual Remoto:** Enciende y apaga la válvula de riego al instante desde la URL pública.
+-  **Modo Temporizador:** Configura el riego por una cantidad de segundos determinados y el sistema cerrará la válvula automáticamente al finalizar el conteo.
+-  **Modo Automático:** Utiliza las lecturas del sensor de humedad (analógico) para activar el riego solo cuando la tierra lo requiera (se activa cuando la humedad está por debajo del 30%).
+-  **Monitoreo en Tiempo Real:** Visualiza la humedad actual del suelo, el estado de la válvula y los modos activos a través de la aplicación web.
+-  **Servidor Asíncrono:** Respuestas rápidas, estables y sin bloqueos del microcontrolador gracias a la robusta librería `ESPAsyncWebServer`.
 
 ---
 
-## 🛠️ Tecnologías Utilizadas
+##  Tecnologías Utilizadas
 
 - **Hardware:**
   - Placa Microcontrolador **ESP32**
@@ -64,32 +64,35 @@ Una vez que el usuario interactúa con la interfaz web, el servidor local rediri
 
 ---
 
-## ⚙️ Arquitectura y Diagrama de Funcionamiento
+##  Arquitectura y Diagrama de Funcionamiento
 
 ```text
  +--------------------------+        Acceso Seguro (Túnel)       +----------------------------+
  |                          |  https://riego.bravoserver.fun/    |                            |
- | 🌍 Usuario Remoto        | <================================> | 🖥️ Servidor Local         |
+ |    Usuario Remoto        | <================================> |     Servidor Local         |
  |    (Redes Móviles/WiFi)  |                                    |    (Frontend React Host)   |
  |                          |                                    +----------------------------+
  +--------------------------+                                         |                 ^
                                                                       | Red Local (WiFi)|
                                                 Peticiones locales    v         JSON    |
                                                                  +----------------------------+
-                                                                 | 📟 ESP32 Microcontrolador  |
+                                                                 |    ESP32 Microcontrolador  |
                                                                  |    (ESPAsyncWebServer)     |
                                                                  +----------------------------+
                                                                       |                 |
                                                                       v                 v  (Señal Analógica)
                                                           +------------------+  +-------------------+
-                                                          | 💧 Módulo Relé   |  | 🌱 Sensor de      |
+                                                          |    Módulo Relé   |  |    Sensor de      |
                                                           |    & Válvula     |  |    Humedad (P34)  |
                                                           +------------------+  +-------------------+
 ```
+A continuación se muestra la configuración final del circuito, donde se detallan las conexiones entre el ESP32, el sensor de humedad del suelo, el módulo de relé y la electroválvula de riego.
+
+<img width="2816" height="1536" alt="Image" src="https://github.com/user-attachments/assets/18c27378-ef37-48ff-a458-3d4c19d7d4ff" />
 
 ---
 
-## 📂 Estructura del Proyecto
+##  Estructura del Proyecto
 
 El repositorio está dividido principalmente en dos dominios de desarrollo:
 
@@ -106,7 +109,7 @@ Sistema-Riego-ESP32/
 
 ---
 
-## 🚀 Instrucciones de Instalación
+##  Instrucciones de Instalación
 
 ### 1. Configuración del ESP32 (Firmware)
 1. Abre el archivo [riego/riego.ino](cci:7://file:///c:/Users/user/OneDrive/Documentos/PROYECTOSDIEGO/Sistema-Riego-ESP32/riego/riego.ino:0:0-0:0) en **Arduino IDE** (o VSCode con PlatformIO).
@@ -133,7 +136,7 @@ Sistema-Riego-ESP32/
 
 ---
 
-## 💻 Ejemplo de Uso
+##  Ejemplo de Uso
 
 1. **Accede a la Interfaz Pública:** Desde cualquier conexión a internet (incluso si no estás en casa), visita **[https://riego.bravoserver.fun/](https://riego.bravoserver.fun/)**.
 2. **Revisa la Humedad:** Constata de forma visual el porcentaje de hidratación actual del terreno para decidir cuáles son los requerimientos del cultivo.
@@ -142,16 +145,17 @@ Sistema-Riego-ESP32/
 
 ---
 
-## 🔮 Mejoras Futuras
+##  Mejoras Futuras
 
-- [ ] ☁️ **Sincronización de Base de Datos Remota:** Implementar persistencia de estados en Firebase / MongoDB por si el servidor físico se reinicia.
-- [ ] 📈 **Dashboards y Analítica:** Implementar métricas usando gráficos a través del tiempo sobre parámetros cruzados de humedad de tierra versus tiempo de riego.
-- [ ] 🌦️ **Regulación Climática Avanzada:** Consumo de APIs (Ej: OpenWeatherMap) para denegar el riego automático si se pronostica fuerte lluvia por la tarde en la misma locación geográfica.
-- [ ] 🔔 **Alertas mediante Notificaciones:** Implementación de Push Notifications (PWAs) por Telegram/WhatsApp informando cada vez que la bomba/válvula se activan mas allá de las programaciones establecidas.
+- [ ]  **Sincronización de Base de Datos Remota:** Implementar persistencia de estados en Firebase / MongoDB por si el servidor físico se reinicia.
+- [ ]  **Dashboards y Analítica:** Implementar métricas usando gráficos a través del tiempo sobre parámetros cruzados de humedad de tierra versus tiempo de riego.
+- [ ]  **Regulación Climática Avanzada:** Consumo de APIs (Ej: OpenWeatherMap) para denegar el riego automático si se pronostica fuerte lluvia por la tarde en la misma locación geográfica.
+- [ ]  **Alertas mediante Notificaciones:** Implementación de Push Notifications (PWAs) por Telegram/WhatsApp informando cada vez que la bomba/válvula se activan mas allá de las programaciones establecidas.
 
 ---
 
-## 👨‍💻 Autor
+##  Autor
 
-Diseñado, desarrollado e implementado por **Diego Bravo** - [GitHub @diegobravo10](https://github.com/diegobravo10) | Aplicación Web: **[riego.bravoserver.fun](https://riego.bravoserver.fun/)**
+* Diseñado, desarrollado e implementado por **Diego Bravo** - [GitHub @diegobravo10](https://github.com/diegobravo10) 
+* Aplicación Web: **[riego.bravoserver.fun](https://riego.bravoserver.fun/)**
 
